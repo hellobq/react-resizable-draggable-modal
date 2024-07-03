@@ -1,0 +1,152 @@
+.body-hidden {
+  overflow: hidden;
+}
+
+.flexible-modal-mask {
+  position: fixed;
+  height: 100%;
+  background: rgba(55, 55, 55, 0.6);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.flexible-modal {
+  z-index: 1;
+  padding: 0 24px 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+
+  &.full {
+    opacity: 1;
+    transition: 300ms;
+  }
+
+  &-header {
+    line-height: 24px;
+    color: #000000e0;
+    display: flex;
+  
+    h5 {
+      margin: 0;
+      padding: 20px 0 10px;
+      font-size: 18px;
+    }
+    
+    .drag-bar {
+      flex: 1;
+      cursor: grab;
+    }
+
+    .right-top-btns {
+      padding: 20px 0 10px;
+
+      button {
+        padding: 0;
+        outline: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+      }
+
+      .close-icon-btn {
+        margin-left: 8px;
+      }
+    }
+  }
+  
+  &-body {
+    flex: 1;
+  }
+  
+  &-footer {
+    text-align: end;
+
+    button {
+      margin-left: 12px;
+      padding: 4px 15px;
+      outline: none;
+      background-color: none;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .cancel {
+      border: 1px solid rgb(217, 217, 217);
+      color: rgba(0, 0, 0, 0.88);
+    }
+
+    .ok {
+      background-color: rgb(22, 119, 255);
+      color: white;
+    }
+  }
+  
+  &-resizer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    cursor: se-resize;
+    margin: 5px;
+    width: 16px;
+    height: 16px;
+    border-bottom: solid 2px #d2d1d1;
+    border-right: solid 2px #d2d1d1;
+  }
+
+  &-bottom-resizer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 5px auto;
+    width: 50px;
+    height: 2px;
+    cursor: row-resize;
+    background-color: #d2d1d1;
+  }
+
+  &-right-resizer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto 5px;
+    width: 2px;
+    height: 50px;
+    cursor: col-resize;
+    background-color: #d2d1d1;
+  }
+}
+
+.fade-scale-enter {
+  opacity: 0;
+  transform: scale(0.6);
+}
+.fade-scale-enter-active {
+  opacity: 1;
+  transform: none;
+  transition: 300ms;
+}
+.fade-scale-enter-done {
+  opacity: 1;
+}
+
+.fade-scale-exit {
+  opacity: 1;
+}
+.fade-scale-exit-active {
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 300ms, transform 300ms;
+}
+.fade-scale-exit-done {
+  display: none;
+}

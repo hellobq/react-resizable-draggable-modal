@@ -1,0 +1,30 @@
+name: auto gh-pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-depoly:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup node
+      uses: actions/setup-node@v4
+      with:
+        node-version: '14.21.3'
+  
+    - name: Build Root Project
+      run: |
+        npm install
+        npm run build:pages
+
+    - name: deploy dist files
+      uses: JamesIves/github-pages-deploy-action@v4.5.0
+      with:
+        folder: dist
+        branch: gh-pages

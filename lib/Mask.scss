@@ -1,0 +1,32 @@
+.mask {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: none;
+}
+
+.fade-enter {
+  opacity: 0;
+  display: block;
+}
+.fade-enter-active {
+  opacity: 1;
+  transition: 300ms;
+}
+.fade-enter-done {
+  display: block;
+}
+
+.fade-exit {
+  display: block;
+  opacity: 1;
+}
+.fade-exit-active {
+  opacity: 0;
+  transition: 300ms;
+}
+.fade-exit-done {
+  display: none;
+}
