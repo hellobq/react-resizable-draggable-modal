@@ -10,13 +10,13 @@ export default function Footer({
         onClick={onClose}
         className='cancel'
       >
-        取消
+        cancel
       </button>
       <button
         onClick={onOk}
         className='ok'
       >
-        确定
+        ok
       </button>
     </div>
   )

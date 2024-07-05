@@ -16,13 +16,21 @@ export default function FlexibleModal({
 	initHeight = 400,
 	minWidth = 300,
 	minHeight = 200,
-	resetRectOnOpen,						// 打开时，时候重置 Modal 尺寸、位置
+
+	// When opening, reset the Modal size and position
+	resetRectOnOpen,
 
 	draggable = true,
 	resizable = true,
 	verticalResizable = true,
 	horizontalResizable = true,
-	overflowBoundary = 'auto',	// 是否可超出父容器。auto 默认超出父容器，forbidden 禁止超出父容器
+
+	/**
+	 * Whether it is allowed to exceed the parent container. 
+	 *   auto means exceeding the parent container by default
+	 *   forbidden means not exceeding the parent container
+	 */
+	overflowBoundary = 'auto',
 
 	mask = true,
 	maskClosable,
@@ -30,7 +38,7 @@ export default function FlexibleModal({
 	visible,
   getPopupContainer = () => document.body,
 	className,
-	title = '标题',
+	title = 'title',
 	children,
 
 	onDrag,
@@ -102,10 +110,10 @@ export default function FlexibleModal({
   useEffect(() => {
     if (visible) {
       set_isVisible(true)
-      container.classList.add('body-hidden')
+      container.classList.add('container-hidden')
     } else {
       set_isOpen(false)
-      container.classList.remove('body-hidden')
+      container.classList.remove('container-hidden')
     }
   }, [visible])
 
@@ -157,7 +165,11 @@ export default function FlexibleModal({
   }, [_full])
 
   const onMouseDown = useCallback((e) => {
-		if (e.button !== 0) return // 按下的不是鼠标左键
+		/**
+		 * The left mouse button is not pressed
+		 */
+		if (e.button !== 0) return
+
 		const node_modal = node_modal_ref.current
 		setIsDragging(true)
 		setPoint({
@@ -168,7 +180,7 @@ export default function FlexibleModal({
     e.preventDefault()
   }, [])
 
-	// 更改尺寸
+	// Change size
   const _resize = (clientX, clientY) => {
 		const node_modal = node_modal_ref.current
 		
@@ -227,7 +239,7 @@ export default function FlexibleModal({
 		})
   }
 
-	// 更改位置
+	// Change position
 	const _onDrag = (pageX, pageY) => {
 		const node_modal = node_modal_ref.current
 

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import ReactModal from './lib'
+import ResizableDraggableModal from './lib'
 
 export default () => {
   const containerRef = useRef()
@@ -25,7 +25,7 @@ export default () => {
         }}
       />
 
-      <ReactModal
+      <ResizableDraggableModal
         // minWidth={300}
         // minHeight={300}
         // initWidth={document.documentElement.clientWidth - 100}
@@ -39,9 +39,9 @@ export default () => {
         // overflowBoundary='hidden'
         // getPopupContainer={() => containerRef.current}
         resetRectOnOpen
-        footer={null}
+        // footer={null}
         // onResize={console.log}
-        // disableHorizontalResize
+        horizontalResizable={false}
       >
         <h3>My Modal</h3>
         <div className="body">
@@ -50,7 +50,7 @@ export default () => {
         <button onClick={closeModal}>
           Close modal
         </button>
-      </ReactModal>
+      </ResizableDraggableModal>
     </div>
   )
 }
