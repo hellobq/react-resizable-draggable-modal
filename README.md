@@ -11,7 +11,7 @@ npm i react-resizable-draggable-modal
 ##### In your React component:
 ```javascript
 import ResizableDraggableModal from 'react-resizable-draggable-modal'
-import 'react-resizable-draggable-modal/dist/style.css'
+import 'react-resizable-draggable-modal/build/style.css'
 
 <ResizableDraggableModal
   title='My Modal'
