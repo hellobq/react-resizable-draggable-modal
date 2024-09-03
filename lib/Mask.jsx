@@ -10,8 +10,8 @@ export default ({
 }) => {
   const maskRef = useRef()
   
-  const [isVisible, setIsVisible] = useState() // 控制展示
-  const [isOpen, setIsOpen] = useState() // 控制动画
+  const [isVisible, setIsVisible] = useState()  // control display
+  const [isOpen, setIsOpen] = useState()        // control animation
 
   useEffect(() => {
     if (visible) {

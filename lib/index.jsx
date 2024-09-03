@@ -325,87 +325,84 @@ export default function FlexibleModal({
     >
       {
         mask &&
-        <Mask
-          visible={visible}
-          maskClosable={maskClosable}
-          onCancel={onClose}
-          getPopupContainer={getPopupContainer}
-        />
+          <Mask
+            visible={visible}
+            maskClosable={maskClosable}
+            onCancel={onClose}
+            getPopupContainer={getPopupContainer}
+          />
       }
 
       {
         _isVisible
           ? <CSSTransition
-            in={_isOpen}
-            timeout={300}
-            classNames='fade-scale'
-            nodeRef={node_modal_ref}
-            onExited={() => {
-              set_isVisible(false)
-              set_full()
-            }}
-          >
-            <div
-              ref={node_modal_ref}
-              draggable={isDragging}
-              className={
-                className
-                  ? `flexible-modal ` + className
-                  : className
-              }
-              style={{
-                position: container === document.body
-                  ? 'fixed'
-                  : 'absolute',
-                top: _top,
-                left: _left,
-                width,
-                height,
-                userSelect: isResizing && 'none'
+              in={_isOpen}
+              timeout={300}
+              classNames='fade-scale'
+              nodeRef={node_modal_ref}
+              onExited={() => {
+                set_isVisible(false)
+                set_full()
               }}
             >
-              <Header
-                title={title}
-                draggable={draggable}
-                isDragging={isDragging}
-                onMouseDown={onMouseDown}
-                full={_full}
-                set_full={set_full}
-                onClose={onClose}
-              />
-
-              <div className='flexible-modal-body'>
-                {children}
-              </div>
-
-              {
-                footer !== null &&
-                <Footer
+              <div
+                ref={node_modal_ref}
+                draggable={isDragging}
+                className={'flexible-modal ' + className}
+                style={{
+                  position: container === document.body
+                    ? 'fixed'
+                    : 'absolute',
+                  top: _top,
+                  left: _left,
+                  width,
+                  height,
+                  userSelect: isResizing && 'none',
+                  borderRadius: _full && 0
+                }}
+              >
+                <Header
+                  title={title}
+                  draggable={draggable}
+                  isDragging={isDragging}
+                  onMouseDown={onMouseDown}
+                  full={_full}
+                  set_full={set_full}
                   onClose={onClose}
-                  onOk={onOk}
                 />
-              }
 
-              {
-                !_full &&
-                resizable &&
-                <Resizer
-                  horizontalResizable={horizontalResizable}
-                  verticalResizable={verticalResizable}
-                  onMouseDown={({ direct }) => {
-                    setIsResizing(true)
+                <div className='flexible-modal-body'>
+                  {children}
+                </div>
 
-                    if (direct === 'right') {
-                      setOnlyHorizontalResize(true)
-                    } else if (direct === 'bottom') {
-                      setOnlyVerticalResize(true)
-                    } else if (direct === 'bottomRight') {
-                    }
-                  }}
-                />
-              }
-            </div>
-          </CSSTransition>
+                {
+                  footer !== null &&
+                    <Footer
+                      onClose={onClose}
+                      onOk={onOk}
+                    />
+                }
+
+                {
+                  !_full &&
+                  resizable &&
+                    <Resizer
+                      horizontalResizable={horizontalResizable}
+                      verticalResizable={verticalResizable}
+                      onMouseDown={({ direct }) => {
+                        setIsResizing(true)
+
+                        if (direct === 'right') {
+                          setOnlyHorizontalResize(true)
+                        } else if (direct === 'bottom') {
+                          setOnlyVerticalResize(true)
+                        } else if (direct === 'bottomRight') {
+                        }
+                      }}
+                    />
+                }
+              </div>
+            </CSSTransition>
           : null
       }
     </Portal>
