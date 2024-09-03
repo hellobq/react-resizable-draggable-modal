@@ -36,12 +36,12 @@ export default () => {
         onClose={closeModal}
         onOk={closeModal}
         visible={modalIsOpen}
-        // overflowBoundary='hidden'
+        overflowBoundary='hidden'
         // getPopupContainer={() => containerRef.current}
         resetRectOnOpen
         // footer={null}
         // onResize={console.log}
-        horizontalResizable={false}
+        // horizontalResizable={false}
       >
         <h3>My Modal</h3>
         <div className="body">

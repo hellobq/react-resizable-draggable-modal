@@ -3,7 +3,7 @@ import React from 'react'
 export default function Resizer({
   horizontalResizable,
   verticalResizable,
-	onMouseDown
+  onMouseDown
 }) {
   return (
     <>

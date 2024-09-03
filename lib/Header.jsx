@@ -1,13 +1,13 @@
 import React from 'react'
 
 export default function Header({
-	title,
-	draggable,
+  title,
+  draggable,
   isDragging,
   onMouseDown,
   full,
   set_full,
-	onClose
+  onClose
 }) {
   return (
     <div className='flexible-modal-header'>

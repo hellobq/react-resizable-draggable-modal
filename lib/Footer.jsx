@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function Footer({
-	onClose,
+  onClose,
   onOk
 }) {
   return (
