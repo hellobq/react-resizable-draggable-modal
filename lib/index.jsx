@@ -66,44 +66,51 @@ export default function FlexibleModal({
 
   const prev_left = usePrevious({
     value: _left,
-    shouldUpdate: !_full
+    shouldUpdate: _isVisible && !_full
   })
   const prev_top = usePrevious({
     value: _top,
-    shouldUpdate: !_full
+    shouldUpdate: _isVisible && !_full
   })
   const prev_width = usePrevious({
     value: width,
-    shouldUpdate: !_full
+    shouldUpdate: _isVisible && !_full
   })
   const prev_height = usePrevious({
     value: height,
-    shouldUpdate: !_full
+    shouldUpdate: _isVisible && !_full
   })
   const [point, setPoint] = useState({})
 
-  function initLeft() {
+  function getContainerRect() {
     let containerWidth = container === document.body
       ? window.innerWidth
       : container.offsetWidth
-    return left !== undefined
-      ? left
-      : containerWidth / 2 - initWidth / 2
-  }
-
-  function initTop() {
     let containerHeight = container === document.body
       ? window.innerHeight
       : container.offsetHeight
-    return top !== undefined
+    return {
+      containerWidth,
+      containerHeight
+    }
+  }
+
+  function initPosition() {
+    const { containerWidth, containerHeight } = getContainerRect()
+    let _left = left !== undefined
+      ? left
+      : containerWidth / 2 - initWidth / 2
+    let _top = top !== undefined
       ? top
       : containerHeight / 2 - initHeight / 2
+
+    set_left(_left)
+    set_top(_top)
   }
 
   useEffect(() => {
     if (container) {
-      set_left(initLeft())
-      set_top(initTop())
+      initPosition()
     }
   }, [container])
 
@@ -122,8 +129,7 @@ export default function FlexibleModal({
       set_isOpen(true)
 
       if (resetRectOnOpen) {
-        set_left(initLeft)
-        set_top(initTop)
+        initPosition()
         setWidth(initWidth)
         setHeight(initHeight)
       }
@@ -132,16 +138,23 @@ export default function FlexibleModal({
 
   useEffect(() => {
     if (!_isVisible) return
+    // console.log(_top, _left, width, height)
+
+    const { containerWidth, containerHeight } = getContainerRect()
+    set_full(
+      !_left &&
+      !_top &&
+      width == containerWidth &&
+      height == containerHeight
+    )
+  }, [_isVisible, _top, _left, width, height])
+
+  useEffect(() => {
+    if (!_isVisible) return
 
     let _left, _top, width, height
     if (_full) {
-      let containerWidth = container === document.body
-        ? window.innerWidth
-        : container.offsetWidth
-      let containerHeight = container === document.body
-        ? window.innerHeight
-        : container.offsetHeight
-
+      const { containerWidth, containerHeight } = getContainerRect()
       _left = _top = 0
       width = containerWidth
       height = containerHeight
@@ -191,13 +204,7 @@ export default function FlexibleModal({
       top = rect.top
     }
 
-    let containerWidth = container === document.body
-      ? window.innerWidth
-      : container.offsetWidth
-    let containerHeight = container === document.body
-      ? window.innerHeight
-      : container.offsetHeight
-
+    const { containerWidth, containerHeight } = getContainerRect()
     let newWidth = width
     let newHeight = height
 
@@ -254,13 +261,7 @@ export default function FlexibleModal({
         _top = 0
       }
 
-      let containerWidth = container === document.body
-        ? window.innerWidth
-        : container.offsetWidth
-      let containerHeight = container === document.body
-        ? window.innerHeight
-        : container.offsetHeight
-
+      const { containerWidth, containerHeight } = getContainerRect()
       if (
         _left + node_modal.offsetWidth >= containerWidth
       ) {
@@ -342,7 +343,6 @@ export default function FlexibleModal({
               nodeRef={node_modal_ref}
               onExited={() => {
                 set_isVisible(false)
-                set_full()
               }}
             >
               <div
