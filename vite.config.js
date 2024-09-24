@@ -14,7 +14,6 @@ export default defineConfig(({ command, mode }) => {
       ? {
           publicDir: false,
           build: {
-            minify: false,
             outDir: 'build',
             lib: {
               entry: path.resolve(__dirname, 'lib'),
