@@ -32,7 +32,6 @@ export default () => {
         // initHeight={document.documentElement.clientHeight - 100}
         // mask={false}
         onFocus={() => console.log("Modal is clicked")}
-        className={"my-modal-custom-class"}
         onClose={closeModal}
         onOk={closeModal}
         visible={modalIsOpen}
