@@ -348,7 +348,7 @@ export default function FlexibleModal({
               <div
                 ref={node_modal_ref}
                 draggable={isDragging}
-                className={'flexible-modal ' + className}
+                className={`flexible-modal ${className || ''}`}
                 style={{
                   position: container === document.body
                     ? 'fixed'
