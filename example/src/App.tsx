@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react'
-import ResizableDraggableModal from './lib'
+import ResizableDraggableModal from 'react-resizable-draggable-modal'
+import 'react-resizable-draggable-modal/build/style.css'
 
 export default () => {
-  const containerRef = useRef()
-  const [modalIsOpen, set_modalIsOpen] = useState()
+  const containerRef = useRef(null)
+  const [modalIsOpen, set_modalIsOpen] = useState(false)
 
   const closeModal = () => {
     set_modalIsOpen(false)
@@ -31,7 +32,6 @@ export default () => {
         // initWidth={document.documentElement.clientWidth - 100}
         // initHeight={document.documentElement.clientHeight - 100}
         // mask={false}
-        onFocus={() => console.log("Modal is clicked")}
         className='my-modal-custom-class'
         onClose={closeModal}
         onOk={closeModal}
@@ -39,7 +39,7 @@ export default () => {
         overflowBoundary='hidden'
         // getPopupContainer={() => containerRef.current}
         resetRectOnOpen
-        // footer={null}
+        footer={null}
         // onResize={console.log}
         // horizontalResizable={false}
       >

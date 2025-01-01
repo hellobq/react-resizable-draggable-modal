@@ -1,12 +1,14 @@
-import { useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
-export default ({
-  container,
-  children,
-}) => {
-  const containerRef = useRef(container)
-  const defaultNode = useRef()
+type PortalProps = {
+  container: HTMLElement,
+  children: React.ReactNode
+}
+
+export default function Portal({ container, children }: PortalProps) {
+  const containerRef = useRef<HTMLElement>(container)
+  const defaultNode = useRef<HTMLDivElement | null>()
 
   if (!containerRef.current) {
     containerRef.current = document.body
@@ -23,7 +25,7 @@ export default ({
         defaultNode.current
       ) {
         containerRef.current.removeChild(defaultNode.current)
-        defaultNode.current = undefined
+        defaultNode.current = null
       }
     }
   }, [])

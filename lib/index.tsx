@@ -8,6 +8,7 @@ import Footer from './Footer'
 import Resizer from './Resizer'
 import './index.scss'
 import usePrevious from './usePrevious'
+import { Point, FlexibleModalProps } from './FlexibleModal'
 
 export default function FlexibleModal({
   left,
@@ -16,20 +17,12 @@ export default function FlexibleModal({
   initHeight = 400,
   minWidth = 300,
   minHeight = 200,
-
-  // When opening, reset the Modal size and position
   resetRectOnOpen,
 
   draggable = true,
   resizable = true,
   verticalResizable = true,
   horizontalResizable = true,
-
-  /**
-   * Whether it is allowed to exceed the parent container. 
-   *   auto means exceeding the parent container by default
-   *   forbidden means not exceeding the parent container
-   */
   overflowBoundary = 'auto',
 
   mask = true,
@@ -46,12 +39,12 @@ export default function FlexibleModal({
   footer,
   onClose,
   onOk,
-}) {
+}: FlexibleModalProps) {
   const container = getPopupContainer()
-  const [_isVisible, set_isVisible] = useState()
-  const [_isOpen, set_isOpen] = useState()
+  const [_isVisible, set_isVisible] = useState(false)
+  const [_isOpen, set_isOpen] = useState(false)
 
-  const node_modal_ref = useRef()
+  const node_modal_ref = useRef<HTMLDivElement>(null)
 
   const [isDragging, setIsDragging] = useState(false)
   const [isResizing, setIsResizing] = useState(false)
@@ -64,23 +57,26 @@ export default function FlexibleModal({
   const [width, setWidth] = useState(initWidth)
   const [height, setHeight] = useState(initHeight)
 
-  const prev_left = usePrevious({
+  const prev_left = usePrevious<number>({
     value: _left,
     shouldUpdate: _isVisible && !_full
   })
-  const prev_top = usePrevious({
+  const prev_top = usePrevious<number>({
     value: _top,
     shouldUpdate: _isVisible && !_full
   })
-  const prev_width = usePrevious({
+  const prev_width = usePrevious<number>({
     value: width,
     shouldUpdate: _isVisible && !_full
   })
-  const prev_height = usePrevious({
+  const prev_height = usePrevious<number>({
     value: height,
     shouldUpdate: _isVisible && !_full
   })
-  const [point, setPoint] = useState({})
+  const [point, setPoint] = useState<Point>({
+    x: 0,
+    y: 0
+  })
 
   function getContainerRect() {
     let containerWidth = container === document.body
@@ -152,7 +148,7 @@ export default function FlexibleModal({
   useEffect(() => {
     if (!_isVisible) return
 
-    let _left, _top, width, height
+    let _left: number, _top: number, width: number, height: number
     if (_full) {
       const { containerWidth, containerHeight } = getContainerRect()
       _left = _top = 0
@@ -177,13 +173,13 @@ export default function FlexibleModal({
     })
   }, [_full])
 
-  const onMouseDown = useCallback((e) => {
+  const onMouseDown = useCallback((e: React.MouseEvent<HTMLSpanElement>) => {
     /**
      * The left mouse button is not pressed
      */
     if (e.button !== 0) return
 
-    const node_modal = node_modal_ref.current
+    const node_modal = node_modal_ref.current as HTMLDivElement
     setIsDragging(true)
     setPoint({
       x: e.pageX - node_modal.offsetLeft,
@@ -194,8 +190,8 @@ export default function FlexibleModal({
   }, [])
 
   // Change size
-  const _resize = (clientX, clientY) => {
-    const node_modal = node_modal_ref.current
+  const _resize = (clientX: number, clientY: number) => {
+    const node_modal = node_modal_ref.current as HTMLDivElement
 
     let left = 0, top = 0
     if (container !== document.body) {
@@ -247,8 +243,8 @@ export default function FlexibleModal({
   }
 
   // Change position
-  const _onDrag = (pageX, pageY) => {
-    const node_modal = node_modal_ref.current
+  const _onDrag = (pageX: number, pageY: number) => {
+    const node_modal = node_modal_ref.current as HTMLDivElement
 
     let _left = pageX - point.x
     let _top = pageY - point.y
@@ -285,7 +281,7 @@ export default function FlexibleModal({
     set_top(_top)
   }
 
-  const onMouseMove = useCallback((e) => {
+  const onMouseMove = useCallback((e: MouseEvent) => {
     // console.log(isDragging, isResizing, point)
     if (isDragging && point) {
       _onDrag(e.pageX, e.pageY)
@@ -296,7 +292,7 @@ export default function FlexibleModal({
     e.preventDefault()
   }, [isDragging, point, isResizing])
 
-  const onMouseUp = useCallback((e) => {
+  const onMouseUp = useCallback((e: MouseEvent) => {
     document.removeEventListener('mousemove', onMouseMove)
     setIsDragging(false)
     setIsResizing(false)
@@ -330,7 +326,7 @@ export default function FlexibleModal({
             visible={visible}
             maskClosable={maskClosable}
             onCancel={onClose}
-            getPopupContainer={getPopupContainer}
+            container={container}
           />
       }
 
@@ -357,8 +353,8 @@ export default function FlexibleModal({
                   left: _left,
                   width,
                   height,
-                  userSelect: isResizing && 'none',
-                  borderRadius: _full && 0
+                  userSelect: isResizing ? 'none' : undefined,
+                  borderRadius: _full ? 0 : undefined
                 }}
               >
                 <Header
@@ -377,6 +373,7 @@ export default function FlexibleModal({
 
                 {
                   footer !== null &&
+                  onOk &&
                     <Footer
                       onClose={onClose}
                       onOk={onOk}

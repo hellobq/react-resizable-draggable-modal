@@ -20,11 +20,12 @@ jobs:
   
     - name: Build Root Project
       run: |
+        cd example
         npm install
         npm run build:pages
 
     - name: deploy dist files
       uses: JamesIves/github-pages-deploy-action@v4.5.0
       with:
-        folder: dist
+        folder: example/dist
         branch: gh-pages

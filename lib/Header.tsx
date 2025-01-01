@@ -1,4 +1,12 @@
 import React from 'react'
+import { FlexibleModalProps } from './FlexibleModal'
+
+type HeaderProps = Pick<FlexibleModalProps, 'title' | 'draggable' | 'onClose'> & {
+  isDragging: boolean;
+  full: boolean;
+  set_full: React.Dispatch<React.SetStateAction<boolean>>;
+  onMouseDown: (e: React.MouseEvent<HTMLSpanElement>) => void;
+}
 
 export default function Header({
   title,
@@ -8,7 +16,7 @@ export default function Header({
   full,
   set_full,
   onClose
-}) {
+}: HeaderProps) {
   return (
     <div className='flexible-modal-header'>
       <h5>{title}</h5>
@@ -18,7 +26,7 @@ export default function Header({
           <span 
             className='drag-bar'
             style={{
-              cursor: isDragging && 'grabbing'
+              cursor: isDragging ? 'grabbing' : undefined
             }}
             onMouseDown={onMouseDown}
           />

@@ -1,17 +1,23 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import './Mask.scss'
+import { FlexibleModalProps } from './FlexibleModal'
 
-export default ({
+type MaskProps = Pick<FlexibleModalProps, 'visible' | 'maskClosable' | 'getPopupContainer'> & {
+  container: HTMLElement,
+  onCancel: FlexibleModalProps['onClose']
+}
+
+export default function Mask({
   visible,
   maskClosable,
-  getPopupContainer,
+  container,
   onCancel,
-}) => {
-  const maskRef = useRef()
+}: MaskProps) {
+  const maskRef = useRef<HTMLDivElement>(null)
   
-  const [isVisible, setIsVisible] = useState()  // control display
-  const [isOpen, setIsOpen] = useState()        // control animation
+  const [isVisible, setIsVisible] = useState(false)  // control display
+  const [isOpen, setIsOpen] = useState(false)        // control animation
 
   useEffect(() => {
     if (visible) {
@@ -47,7 +53,7 @@ export default ({
           }
         }}
         style={{
-          position: getPopupContainer() === document.body
+          position: container === document.body
             ? 'fixed'
             : 'absolute'
         }}

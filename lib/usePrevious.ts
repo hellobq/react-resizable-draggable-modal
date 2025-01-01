@@ -1,10 +1,15 @@
 import { useRef, useEffect } from 'react'
 
-export default function usePrevious({
+type PreviousProps<T> = {
+  value: T,
+  shouldUpdate: boolean | ((prev: T, next: T) => boolean)
+}
+
+export default function usePrevious<T>({
   value,
   shouldUpdate
-}) {
-  const prevRef = useRef()
+}: PreviousProps<T>) {
+  const prevRef = useRef<T>(value)
 
   useEffect(() => {
     if (
